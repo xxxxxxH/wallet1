@@ -2,11 +2,9 @@ package hui.shou.tao.fragment
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.tencent.mmkv.MMKV
 import hui.shou.tao.base.BaseFragment
 import hui.shou.tao.databinding.FragmentHistoryBinding
 import hui.shou.tao.databinding.HistoryItemBinding
-import hui.shou.tao.entity.HistoryEntity
 import hui.shou.tao.event.xEvent
 import hui.shou.tao.utils.Constant
 import hui.shou.tao.utils.getAllRecords
@@ -22,8 +20,8 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBind
     override fun initialization() {
         EventBus.getDefault().register(this)
         getAllRecords().apply {
-            if (size > 0){
-                val adapter = BindingAdapter(HistoryItemBinding::inflate, this){position, item ->
+            if (size > 0) {
+                val adapter = BindingAdapter(HistoryItemBinding::inflate, this) { _, item ->
                     Glide.with(requireActivity()).load(item.img).into(binding.icon)
                     binding.time.text = item.time
                     binding.name.text = item.typeName
@@ -37,11 +35,22 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBind
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(e: xEvent){
+    fun onEvent(e: xEvent) {
         val msg = e.getMessage()
-        when(msg[0]){
+        when (msg[0]) {
             Constant.MSG_ADD_RECORD -> {
-
+                getAllRecords().apply {
+                    if (size > 0) {
+                        val adapter = BindingAdapter(HistoryItemBinding::inflate, this) { _, item ->
+                            Glide.with(requireActivity()).load(item.img).into(binding.icon)
+                            binding.time.text = item.time
+                            binding.name.text = item.typeName
+                            binding.cost.text = item.cost
+                        }
+                        fragmentBinding.recycler.layoutManager = LinearLayoutManager(requireActivity())
+                        fragmentBinding.recycler.adapter = adapter
+                    }
+                }
             }
         }
     }

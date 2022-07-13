@@ -3,25 +3,28 @@
     package="hui.shou.tao">
 
     <application
-        android:name=".base.xApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".base.xApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Huishoutao">
         <activity
-            android:name=".activity.AddActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:name=".activity.IndexActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:exported="false"
+            android:name=".activity.AddActivity" />
+        <activity
+            android:exported="false"
+            android:name=".activity.MainActivity" />
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
